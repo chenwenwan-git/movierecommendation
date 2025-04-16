@@ -40,13 +40,16 @@ const loginout = ()=>{
       :prefix-icon="Search"
     />
          </div>
+         
          <div class="loginBtn" v-if="!userStore.token" @click="$router.push('/login')">登录</div>
          
         <el-dropdown v-else placement="bottom-end">
+          
           <span class="el-dropdown__box">
             <el-avatar :src="avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
+          
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="profile" :icon="User"
