@@ -9,10 +9,43 @@ import {
   Search
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
+// import {ElMessageBox,ElMessage} from 'element-plus'
 import { useUserStore } from '@/stores';
+
+
+
+import { useRouter } from 'vue-router'
 const userStore = useUserStore()
-const loginout = ()=>{
-  userStore.setToken('')
+const router = useRouter()  
+
+
+const handleCommand = async (key)=>{
+
+  if(key==='logout'){
+    //进行退出登录操作
+     ElMessageBox.confirm(
+    '你确定要退出登录吗?',
+    '温馨提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+      
+    }
+  )
+    .then(() => {
+      userStore.setToken('')
+      ElMessage({
+        type: 'success',
+        message: '退出登录成功!',
+      })
+
+    })
+    
+}
+else{
+  router.push('/'+key)
+}
 }
 
 </script>
@@ -43,9 +76,10 @@ const loginout = ()=>{
          
          <div class="loginBtn" v-if="!userStore.token" @click="$router.push('/login')">登录</div>
          
-        <el-dropdown v-else placement="bottom-end">
+        <el-dropdown v-else placement="bottom-end" @command="handleCommand">
           
           <span class="el-dropdown__box">
+            <span style="font-size: 20px;color:white;margin-right: 10px;">CHEN</span>
             <el-avatar :src="avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
@@ -61,7 +95,7 @@ const loginout = ()=>{
               <el-dropdown-item command="password" :icon="EditPen"
                 >修改密码</el-dropdown-item
               >
-              <el-dropdown-item @click="loginout" command="logout" :icon="SwitchButton"
+              <el-dropdown-item command="logout" :icon="SwitchButton"
                 >退出登录</el-dropdown-item
               >
             </el-dropdown-menu>

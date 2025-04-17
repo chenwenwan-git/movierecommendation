@@ -47,8 +47,10 @@ const register = async ()=>{
     //进行注册之前的表单校验，不成功会自动根据rules进行校验提示
     await form.value.validate()
     console.log("成功了，可以开始注册请求")
+    ElMessage.success('注册成功')
+    isRegister.value = false
     //这里进行注册请求，
-    await userRegisterService(formModel.value)
+    // await userRegisterService(formModel.value)
       //之后再看视频
 }
 
@@ -64,7 +66,7 @@ const login = async ()=>{
     console.log(userStore.token)
     userStore.setToken('gggg')
     // 下面这个报错了，之后修改
-    // ElMessage.success('登陆成功')
+    ElMessage.success('登陆成功')
     console.log('登陆成功')
     console.log(userStore.token)
     router.push('/movie/FirstPage')
