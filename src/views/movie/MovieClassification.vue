@@ -1,5 +1,6 @@
 <script setup>
 import MovieLabel from './components/MovieLabel.vue';
+import EveryMovieCard from './components/EveryMovieCard.vue';
 import { ref } from 'vue'
 import { RefreshLeft } from '@element-plus/icons-vue'
 
@@ -86,6 +87,7 @@ const reload = () => {
 </script>
 
 <template>
+  <div class="container">
      <div class="filter-container">
     <el-button round @click="reload">
       <el-icon><RefreshLeft /></el-icon>
@@ -94,21 +96,37 @@ const reload = () => {
     <MovieLabel :items="types" label="类型:" @toggleActive="toggleTypeActive" />
     <MovieLabel :items="regions" label="地区:" @toggleActive="toggleRegionActive" />
   </div>
+  <div class="moviecard">
+  <EveryMovieCard v-for="index in 3" :key="index" style="margin-bottom: 20px;" @click="$router.push('/movie/Detail')"></EveryMovieCard>
+  </div>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-.filter-container {
-  
-  
 
+
+
+
+<style lang="scss" scoped>
+.container{
+margin:0 auto;
+width: 70vw;
+margin-top: 10px;
+  
+}
+.filter-container {
+  padding: 10px;
+      border-radius: 20px;
+      
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
     
   
-      border-radius: 20px;
-      margin:0 auto;
+}
+.moviecard{
+  margin-top: 20px;
+  padding:20px;
+  border-radius: 20px;
+      
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 70vw;
-    margin-top: 10px;
-  padding: 10px;
-  border-radius: 5px;
 }
 </style>

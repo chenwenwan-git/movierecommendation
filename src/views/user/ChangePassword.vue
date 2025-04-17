@@ -1,6 +1,6 @@
 <script setup>
 import {EditPen,Lock } from '@element-plus/icons-vue'
-import MyInfoBasic from './components/MYInfoBasic.vue';
+
 import {ref} from 'vue'
 const activeIndex = ref('1')
 // 取得表单实例
@@ -61,8 +61,8 @@ const reset = ()=>{
 </script>
 
 <template>
-    <div class="InfoContainer">
-        <MyInfoBasic></MyInfoBasic>
+    
+        
         <div>
               <el-menu
     :default-active="activeIndex"
@@ -86,10 +86,10 @@ const reset = ()=>{
 <div class="passwordbox">
  <el-form :model="formModel" :rules="rules" ref="form" size="large" autocomplete="off">
        
-        <el-form-item prop="origin">
-          <el-input v-model="formModel.origin" :prefix-icon="Lock" placeholder="请输入原密码"></el-input>
+        <el-form-item prop="origin" label="原始密码">
+          <el-input  v-model="formModel.origin" :prefix-icon="Lock" placeholder="请输入原密码"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="password" label="修改密码">
           <el-input
           v-model="formModel.password"
             name="password"
@@ -98,7 +98,7 @@ const reset = ()=>{
             placeholder="请输入修改后的密码"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="repassword">
+        <el-form-item prop="repassword" label="确认密码">
           <el-input
           v-model="formModel.repassword"
             name="password"
@@ -125,7 +125,7 @@ const reset = ()=>{
 
 
 
-    </div>
+    
 
 </template>
 
