@@ -44,7 +44,7 @@ const handleCommand = async (key)=>{
     
 }
 else{
-  router.push('/'+key)
+  router.push('/user/'+key)
 }
 }
 
@@ -60,9 +60,9 @@ else{
         <div style="font-size: 30px; color:white; ">电影推荐系统</div>
         <div class="nav">
          
-          <div @click="$router.push('/movie/FirstPage')" style="margin-right: 20px; font-weight: 700;">首页</div>
+          <div @click="$router.push('/movie/FirstPage')" style="margin-right: 20px;" :class="{bebold:this.$route.path === '/movie/FirstPage'}">首页</div>
           <!-- 加粗显示 -->
-          <div @click="$router.push('/movie/Classification')">分类</div>
+          <div @click="$router.push('/movie/Classification')" :class="{bebold:this.$route.path === '/movie/Classification'}">分类</div>
           
         </div>
          
@@ -86,13 +86,13 @@ else{
           
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="profile" :icon="User"
+              <el-dropdown-item command="MyInfo" :icon="User"
                 >个人信息</el-dropdown-item
               >
-              <el-dropdown-item command="avatar" :icon="Crop"
+              <el-dropdown-item command="MyTrends" :icon="Crop"
                 >我的动态</el-dropdown-item
               >
-              <el-dropdown-item command="password" :icon="EditPen"
+              <el-dropdown-item command="ChangePassword" :icon="EditPen"
                 >修改密码</el-dropdown-item
               >
               <el-dropdown-item command="logout" :icon="SwitchButton"
@@ -103,7 +103,7 @@ else{
         </el-dropdown>
       </el-header>
 
-      <el-main>
+      <el-main style="margin-top: 60px;">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -115,13 +115,20 @@ else{
 
 
 <style scoped>
+.bebold{
+  font-weight: 700;
+}
 .common-layout {
   height: 100vh;
+  
   /* color:white; */
   
   
   .el-header {
     background-color: rgb(95, 155, 138);
+    position: fixed;
+    width: 100vw;
+    z-index:100000;
     display: flex;
     align-items: center;
     justify-content: space-between;

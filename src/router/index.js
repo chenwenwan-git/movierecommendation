@@ -15,7 +15,17 @@ const router = createRouter({
   ],
 
 },
+{path:'/user',component:()=>import('@/views/layout/LayoutContainer.vue'),
+  redirect:'/MyInfo',//重定向到用户首页
+  children:[
+    {path:'/user/MyInfo',component:()=>import('@/views/user/MyInfo.vue')},
+    {path:'/user/MyTrends',component:()=>import('@/views/user/MyTrends.vue')},
+    {path:'/user/ChangePassword',component:()=>import('@/views/user/ChangePassword.vue')},
+  ],
+  
 
+
+}
       
 
   ],
