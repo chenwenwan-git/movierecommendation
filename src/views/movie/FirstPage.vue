@@ -1,26 +1,36 @@
 <script setup>
-import FirstPageBox from './components/FirstPageBox.vue';   
-    const imageList = [
-        {src:'/src/assets/1.png', name:'第一个电影', id:'1'},
-        {src:'/src/assets/2.png', name:'第二个电影' ,id:'2'},
-        {src:'/src/assets/3.png', name:'第三个电影' ,id:'3'},
-    ]
+import FirstPageBox from './components/FirstPageBox.vue' 
+import { MovieGetHotService}  from '@/api/movie'
+import {ref,onMounted} from 'vue'
+const MovieHotList = ref([])
+
+const getMovieHotList = async () => {
+  const res = await MovieGetHotService()
+  console.log(res.data.data)
+  MovieHotList.value = res.data.data
+}
+getMovieHotList()
+onMounted(() => {
+  MovieHotList.value = MovieHotList.value.sort((a, b) => b.movieScore - a.movieScore)
+})
+
 </script>
 
 <template>
     
   <el-carousel :interval="4000" type="card" height="600px" style="width: 700px; margin: 0 auto;">
-    <el-carousel-item v-for="item in imageList" :key="item.id">
-        <!-- 之后修改key -->
-        <img :src="item.src" alt="轮播图片" style="width: 100%; height: 100%; object-fit: cover;">
+    <el-carousel-item v-for="item in MovieHotList.slice(0,3)" :key="item.movie_id">
+        
+        <img :src="item.postUrl" alt="轮播图片" style="width: 100%; height: 100%; object-fit: cover;">
+       <!-- 图片连接用不了吗 -->
       
       
     </el-carousel-item>
   </el-carousel>
     <div class="moviename">
-    <el-button v-for="item in imageList" :key="item.id" :class="{active:item.id === '2'}">{{ item.name }}</el-button></div>
-    <FirstPageBox></FirstPageBox>
-    <FirstPageBox></FirstPageBox>
+    <el-button v-for="item in MovieHotList.slice(0,3)" :key="item.movie_id" :class="{active:item.id === '2'}">{{ item.movieName }}</el-button></div>
+    
+    <FirstPageBox :movieList="MovieHotList">评分最多……</FirstPageBox>
 </template>
 
 <style scoped>

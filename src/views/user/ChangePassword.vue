@@ -1,32 +1,83 @@
 <script setup>
 import {EditPen,Lock } from '@element-plus/icons-vue'
-
+import {updatePassword} from '@/api/user.js'
+import { useUserStore } from '@/stores'
 import {ref} from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()  
+
 const activeIndex = ref('1')
+const userStore = useUserStore()
 // 取得表单实例
 const form = ref()
 const formModel = ref({
-    origin:'',
-    password:'',
-    repassword:''
+    oldPassword:'',
+    newPassword:'',
+    rePassword:''
 })
+
+
+
+
 const rules = {
-    // TODO:规则先这样配置，以及是否需要自定义校验
-    origin: [
+    
+    oldPassword: [
         { required: true, message: '请输入原密码', trigger: 'blur' },
-        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
-        // 这里之后进行原密码的校验
+        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
+        {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    }
+        // 这里之后进行原密码的校验，应该不用吧
     ],
-    password: [
+    newPassword: [
         { required: true, message: '请输入修改后的密码', trigger: 'blur' },
-        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
+        {validator(rule,value,callback){
+          if(value === formModel.value.oldPassword && value){
+            callback('新老密码不能一样')
+
+          }else{
+            callback()
+          }
+        }},
+        {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    }
     ],
-    repassword:[
+    rePassword:[
         { required:true,message:'请再次输入修改后的密码',trigger:'blur'},
         { min:6,max:12,message:'长度在6到12个字符',trigger:'blur'},
         {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    },
+        {
       validator: (rule, value, callback) => {
-        if (value !== formModel.value.password) {
+        if (value !== formModel.value.newPassword) {
           callback(new Error('两次输入密码不一致!'))
         } else {
           callback()
@@ -39,23 +90,20 @@ const rules = {
 
 const change = async ()=>{
     //进行注册之前的表单校验，不成功会自动根据rules进行校验提示
+    const { oldPassword, newPassword } = formModel.value;
     await form.value.validate()
-    
+    await updatePassword(oldPassword,newPassword,{})
     ElMessage.success('修改成功')
     //
+    userStore.setToken('')
+    router.push('/login')
     
-    //这里进行修改请求，
-    // await userRegisterService(formModel.value)
-      //之后再看视频
-
-      //退到登录页？？
-      //本地密码如何修改，登陆状态如何修改
 }
 const reset = ()=>{
      formModel.value = {
-        origin:'',
-        password:'',
-        repassword:''   
+        oldPassword:'',
+        newPassword:'',
+        rePassword:''   
     }
 }
 </script>
@@ -86,24 +134,24 @@ const reset = ()=>{
 <div class="passwordbox">
  <el-form :model="formModel" :rules="rules" ref="form" size="large" autocomplete="off">
        
-        <el-form-item prop="origin" label="原始密码">
-          <el-input  v-model="formModel.origin" :prefix-icon="Lock" placeholder="请输入原密码"></el-input>
+        <el-form-item prop="oldPassword" label="原始密码">
+          <el-input  v-model="formModel.oldPassword" :prefix-icon="Lock" placeholder="请输入原密码"></el-input>
         </el-form-item>
-        <el-form-item prop="password" label="修改密码">
+        <el-form-item prop="newPassword" label="修改密码">
           <el-input
-          v-model="formModel.password"
-            name="password"
+          v-model="formModel.newPassword"
+            name="newPassword"
             :prefix-icon="Lock"
-            type="password"
+            type="newPassword"
             placeholder="请输入修改后的密码"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="repassword" label="确认密码">
+        <el-form-item prop="rePassword" label="确认密码">
           <el-input
-          v-model="formModel.repassword"
-            name="password"
+          v-model="formModel.rePassword"
+            name="newPassword"
             :prefix-icon="Lock"
-            type="password"
+            type="newPassword"
             placeholder="请再次输入修改后的密码"
           ></el-input>
         </el-form-item>

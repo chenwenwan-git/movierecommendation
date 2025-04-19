@@ -9,18 +9,14 @@ import {
   Search
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
-// import {ElMessageBox,ElMessage} from 'element-plus'
 import { useUserStore } from '@/stores';
-
-
-
 import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 const router = useRouter()  
 
 
 const handleCommand = async (key)=>{
-
+//判断command指令，进行路由跳转或退出登陆操作
   if(key==='logout'){
     //进行退出登录操作
      ElMessageBox.confirm(
@@ -34,20 +30,22 @@ const handleCommand = async (key)=>{
     }
   )
     .then(() => {
+      //本地token清空
       userStore.setToken('')
       ElMessage({
         type: 'success',
         message: '退出登录成功!',
       })
+      router.push('/movie/FirstPage')
 
     })
     
 }
 else{
+  //跳转到对应页面
   router.push('/user/'+key)
 }
 }
-
 </script>
 
 
@@ -121,14 +119,12 @@ else{
 .common-layout {
   height: 100vh;
   
-  /* color:white; */
-  
   
   .el-header {
     background-color: rgb(95, 155, 138);
     position: fixed;
     width: 100vw;
-    z-index:100000;
+    z-index:1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -156,8 +152,8 @@ else{
      .el-input {
     width: 200px;
     margin-left: 20px;
-    height: 30px; /* 调整为合适高度 */
-    display: inline-block; /* 设置合适的display属性 */
+    height: 30px; 
+    display: inline-block; 
   }
     .el-dropdown__box {
       display: flex;

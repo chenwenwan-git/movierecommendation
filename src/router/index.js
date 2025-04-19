@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import { useUserStore } from '@/stores' // 引入用户模块
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,9 +12,9 @@ const router = createRouter({
   children:[
     {path:'/movie/FirstPage',component:()=>import('@/views/movie/FirstPage.vue')},//电影首页
     {path:'/movie/Classification',component:()=>import('@/views/movie/MovieClassification.vue')},//电影分类
-    {path:'/movie/Detail',component:()=>import('@/views/movie/MovieDetail.vue')},//电影详情
+    {path:'/movie/Detail/:movieId',name:'MovieDetail' ,component:()=>import('@/views/movie/MovieDetail.vue')},//电影详情
 
-    {path:'/user',component:()=>import('@/views/user/UserPage.vue'),
+    {path:'/user',component:()=>import('@/views/user/UserPage.vue'),//用户相关页面
   redirect:'/MyInfo',//重定向到用户首页
   children:[
     {path:'/user/MyInfo',component:()=>import('@/views/user/MyInfo.vue')},
@@ -24,12 +24,6 @@ const router = createRouter({
   ],
 
 },
-
-  
-
-
-
-      
 
   ],
 })

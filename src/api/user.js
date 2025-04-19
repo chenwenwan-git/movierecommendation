@@ -1,14 +1,16 @@
 import request from '@/utils/request'
 
 //注册接口
-export const userRegisterService = ({username,password,repassword})=>
-    
-//根据接口文档修改reg
+export function register(params) {
+  return request.post(`/users/register`, params);
+}
 
-    
-     request.post('/api/reg', {username,password,repassword})
+//登陆接口
+export function login(params) {
+  return request.post(`/users/login`, params);
+}
 
-
-//登录接口
-export const userLoginService = ({username,password})=>
-    request.post('/api/login', {username,password})
+//修改密码
+export function updatePassword(oldPassword, newPassword, params) {
+  return request.post(`/users/updatePwd?oldPassword=${oldPassword}&newPassword=${newPassword}`, params);
+}

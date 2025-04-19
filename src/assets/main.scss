@@ -2,6 +2,8 @@ body{
     margin:0;
     background-color: #f5f5f5;
 }
-
+.el-message-box {
+  z-index: 9999 !important; //避免提示框被导航栏遮住
+}
 //动态和类先不管
 //之后切换路由和进去页面的动画效果

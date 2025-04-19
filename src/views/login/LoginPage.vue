@@ -1,7 +1,6 @@
 <script setup>
-//导入注册接口文件
-// import {userRegisterService,userLoginService} from '@/api/user.js'
-import {userRegisterService} from '@/api/user.js'
+//导入接口文件
+import {register,login} from '@/api/user.js'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import {watch} from 'vue'
@@ -11,29 +10,49 @@ const isRegister = ref(false)
 // 取得表单实例
 const form = ref()
 
-//注册
-//之后根据接口文档的规则和内容进行修改
+
 const formModel = ref({
-    username:'',
-    password:'',
-    repassword:''
+    userName:'',
+    passWord:'',
+    repassWord:''
 })
 const rules = {
-    // TODO:规则先这样配置，以及是否需要自定义校验
-    username: [
+    userName: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
         { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
     ],
-    password: [
+    passWord: [
         { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
+          {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    }
     ],
-    repassword:[
+    repassWord:[
         { required:true,message:'请再次输入密码',trigger:'blur'},
-        { min:6,max:12,message:'长度在6到12个字符',trigger:'blur'},
+        { min:6,max:13,message:'长度在6到13个数字',trigger:'blur'},
+          {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    },
         {
       validator: (rule, value, callback) => {
-        if (value !== formModel.value.password) {
+        if (value !== formModel.value.passWord) {
           callback(new Error('两次输入密码不一致!'))
         } else {
           callback()
@@ -43,43 +62,38 @@ const rules = {
     }
     ]
 }
-const register = async ()=>{
+const getRegister = async ()=>{
     //进行注册之前的表单校验，不成功会自动根据rules进行校验提示
     await form.value.validate()
-    console.log("成功了，可以开始注册请求")
+
+    await register(formModel.value)
     ElMessage.success('注册成功')
+    // 如果注册成功，则返回登录页进行登陆
     isRegister.value = false
-    //这里进行注册请求，
-    // await userRegisterService(formModel.value)
-      //之后再看视频
 }
 
 const userStore = useUserStore()
 const router = useRouter()
-const login = async ()=>{
+//登陆请求
+const getLogin = async ()=>{
     await form.value.validate()
+    // chen-11111111
+    // 接收token
+    const res = await login(formModel.value)
+    userStore.setToken(res.data.data)
     
-    //接收token
-    // const res = await userLoginService(formModel.value)
-    //测试
-    // userStore.setToken(res.data.token)
-    console.log(userStore.token)
-    userStore.setToken('gggg')
-    // 下面这个报错了，之后修改
     ElMessage.success('登陆成功')
-    console.log('登陆成功')
-    console.log(userStore.token)
+    //跳到首页
     router.push('/movie/FirstPage')
 }
 
 //切换登陆注册时，重置表单，由于使用的是同一个对象
 watch(isRegister,()=>{
     formModel.value = {
-        username:'',
-        password:'',
-        repassword:''   
+        userName:'',
+        passWord:'',
+        repassWord:''   
     }
-    
 })
 
 </script>
@@ -95,27 +109,27 @@ watch(isRegister,()=>{
         <el-form-item>
           <h1>注册</h1>
         </el-form-item>
-        <el-form-item prop="username">
-          <el-input v-model="formModel.username" :prefix-icon="User" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="userName">
+          <el-input v-model="formModel.userName" :prefix-icon="User" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="passWord">
           <el-input
-          v-model="formModel.password"
+          v-model="formModel.passWord"
             :prefix-icon="Lock"
-            type="password"
+            type="passWord"
             placeholder="请输入密码"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="repassword">
+        <el-form-item prop="repassWord">
           <el-input
-            v-model="formModel.repassword"
+            v-model="formModel.repassWord"
             :prefix-icon="Lock"
-            type="password"
+            type="passWord"
             placeholder="请输入再次密码"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="register" class="button" type="primary" auto-insert-space>
+          <el-button @click="getRegister" class="button" type="primary" auto-insert-space>
             注册
           </el-button>
         </el-form-item>
@@ -131,15 +145,15 @@ watch(isRegister,()=>{
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item prop="username">
-          <el-input v-model="formModel.username" :prefix-icon="User" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="userName">
+          <el-input v-model="formModel.userName" :prefix-icon="User" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="passWord">
           <el-input
-          v-model="formModel.password"
-            name="password"
+          v-model="formModel.passWord"
+            name="passWord"
             :prefix-icon="Lock"
-            type="password"
+            type="passWord"
             placeholder="请输入密码"
           ></el-input>
         </el-form-item>
@@ -150,7 +164,7 @@ watch(isRegister,()=>{
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="login" class="button" type="primary" auto-insert-space
+          <el-button @click="getLogin" class="button" type="primary" auto-insert-space
             >登录</el-button
           >
         </el-form-item>

@@ -8,7 +8,10 @@ import '@/assets/main.scss'
 
 const app = createApp(App)
  
-
+//解决路由切换回滚顶部的问题
+router.afterEach(() => {
+  document.documentElement.scrollTop = 0;
+})
 app.use(pinia)
 app.use(router)
 

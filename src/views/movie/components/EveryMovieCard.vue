@@ -1,16 +1,26 @@
+<script setup>
+const props = defineProps({
+  moviedata: {
+    type: Object,
+    required: true
+  }
+})
+console.log(props.moviedata)
+</script>
+
 <template>
     <div class="container">
 
         <div class="moviephoto">
-            <img src="@/assets/1.png" alt="">
+            <img :src="props.moviedata.postUrl" alt="">
         </div>
         <div class="movieinfo">
             <div class="moviename">
-                智能大反攻
+                {{ props.moviedata.movieName }}
             </div>
-            <div class="moviestar">1111</div>
+            <div class="moviestar">{{props.moviedata.movieScore}}</div>
             <div class="info">
-                <div>导演：</div>
+                <div>导演：{{props.moviedata.director}}</div>
                 <div>导演：</div>
                 <div>导演：</div>
                 <div>导演：</div>

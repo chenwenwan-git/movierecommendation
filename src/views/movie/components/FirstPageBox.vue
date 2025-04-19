@@ -1,14 +1,23 @@
+<script setup>
+const props = defineProps({
+  movieList: {
+    type: Array,
+    required: true
+  }
+})
+</script>
+
 <template>
     <div class="container">
         <div class="header">
-            最多人看……
+            <slot></slot>
         </div>
         <div class="content">
             
-                <div class="movie-box" v-for="item in 6" :key="item">
-                    <img src="/src/assets/1.png" alt="Movie Poster" class="movie-poster" />
-                    <div class="movie-title">电影标题</div>
-                    <div class="movie-rating">评分：8.5</div>
+                <div class="movie-box" v-for="item in props.movieList" :key="item.movie_id">
+                    <img :src="item.postUrl"  class="movie-poster" />
+                    <div class="movie-title">{{item.movieName}}</div>
+                    <div class="movie-rating">评分：{{ item.movieScore }}</div>
                 </div>
             
         </div>
@@ -57,6 +66,7 @@
     img{
          height: 300px;
         width: 200px;
+        object-fit: cover;
     }
 }
 </style>

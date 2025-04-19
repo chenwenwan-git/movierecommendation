@@ -1,88 +1,69 @@
 <script setup>
 import MovieLabel from './components/MovieLabel.vue';
-import EveryMovieCard from './components/EveryMovieCard.vue';
+// import EveryMovieCard from './components/EveryMovieCard.vue';
 import { ref } from 'vue'
 import { RefreshLeft } from '@element-plus/icons-vue'
+import { cateMovies } from '@/api/movie'
+import { useRouter } from 'vue-router'
 
 // 类型数据
 const types = ref([
-  { label: '全部', isActive: true },
-  { label: '剧情', isActive: false },
-  { label: '喜剧', isActive: false },
-  { label: '动作', isActive: false },
-  // 之后接口修改这里
-    { label: '爱情', isActive: false },
-    { label: '科幻', isActive: false },
-    { label: '悬疑', isActive: false },
-    { label: '恐怖', isActive: false },
-    { label: '动画', isActive: false },
-    { label: '冒险', isActive: false },
-    { label: '战争', isActive: false },
-    { label: '犯罪', isActive: false },
-    { label: '奇幻', isActive: false },
-    { label: '传记', isActive: false },
-    { label: '历史', isActive: false },
-    { label: '运动', isActive: false },
-    { label: '家庭', isActive: false },
-    { label: '音乐', isActive: false },
-    { label: '西部', isActive: false },
-    { label: '短片', isActive: false },
-    { label: '歌舞', isActive: false },
-    { label: '灾难', isActive: false },
-    { label: '情色', isActive: false }
-])
-
-// 地区数据
-const regions = ref([
-  { label: '全部', isActive: true },
-  { label: '中国大陆', isActive: false },
-  { label: '美国', isActive: false },
-  { label: '中国香港', isActive: false },
-  // 之后接口修改这里
-  { label: '中国台湾', isActive: false },
-  { label: '日本', isActive: false },
-  { label: '韩国', isActive: false },
-  { label: '英国', isActive: false },
-  { label: '法国', isActive: false },
-  { label: '德国', isActive: false },
-  { label: '意大利', isActive: false },
-  { label: '西班牙', isActive: false },
-  { label: '印度', isActive: false },
-  { label: '其他', isActive: false },
-  { label: '新加坡', isActive: false },
-  { label: '泰国', isActive: false },
-  { label: '马来西亚', isActive: false },
-  { label: '澳大利亚', isActive: false },
-  { label: '新西兰', isActive: false },
-  { label: '俄罗斯', isActive: false },
-  { label: '巴西', isActive: false },
-  { label: '阿根廷', isActive: false },
-    { label: '南非', isActive: false },
-    { label: '瑞士', isActive: false },
-    { label: '瑞典', isActive: false },
-    { label: '挪威', isActive: false },
-    { label: '芬兰', isActive: false },
-    { label: '丹麦', isActive: false },
-    { label: '荷兰', isActive: false },
-    { label: '比利时', isActive: false },
-    { label: '奥地利', isActive: false },
-    { label: '爱尔兰', isActive: false }
+  { label: '全部', isActive: true ,id:0},
+  { label: '动作', isActive: false ,id:1},
+  { label: '悬疑', isActive: false ,id:2},
+  { label: '科幻', isActive: false ,id:3},
+  { label: '励志', isActive: false ,id:4},
+  { label: '动画', isActive: false ,id:5},
+  { label: '惊悚', isActive: false ,id:6},
 
 ])
+const cateMovieList = ref([])
+const loading = ref(false)
+
+const router = useRouter()
+const getCateMovieList = async(typeId) =>{
+  loading.value = true
+  const res  = await cateMovies(typeId)
+   const newData = res.data.data.map(item => {
+    item.movieScore = +item.movieScore/2; // 用+操作符强制转换
+
+    return item;
+  });
+  cateMovieList.value = newData
+  loading.value = false
+}
+getCateMovieList(0)
+
+
+
+
+//标签的点击事件
 const toggleTypeActive = (type) => {
   types.value.forEach(t => t.isActive = false)
   type.isActive = true
-}
-const toggleRegionActive = (region) => {
-  regions.value.forEach(r => r.isActive = false)
-  region.isActive = true
-}
-const reload = () => {
-  // 重新加载逻辑，例如调用接口重新获取数据
+  getCateMovieList(type.id)
 
+}
+// const toggleRegionActive = (region) => {
+//   regions.value.forEach(r => r.isActive = false)
+//   region.isActive = true
+// }
+const reload = () => {
+  // 重新加载逻辑，调用接口重新获取数据
+ // 先将“全部”类型设为激活状态
+  types.value.forEach(t => t.isActive = false)
+  const allType = types.value.find(t => t.id === 0)
+  if (allType) {
+    allType.isActive = true
+  }
+  // 调用获取电影列表的函数，传入“全部”类型的id
+  getCateMovieList(0)
   console.log('执行重新加载操作')
 }
 
+const goToMovieDetail = (movieId) => {
+  router.push({ name: 'MovieDetail', params: { movieId: movieId } })
+}
 
 </script>
 
@@ -94,10 +75,48 @@ const reload = () => {
       重新加载
     </el-button>
     <MovieLabel :items="types" label="类型:" @toggleActive="toggleTypeActive" />
-    <MovieLabel :items="regions" label="地区:" @toggleActive="toggleRegionActive" />
+    <!-- <MovieLabel :items="regions" label="地区:" @toggleActive="toggleRegionActive" /> -->
   </div>
-  <div class="moviecard">
-  <EveryMovieCard v-for="index in 3" :key="index" style="margin-bottom: 20px;" @click="$router.push('/movie/Detail')"></EveryMovieCard>
+  <div class="moviecard" v-loading="loading">
+     <div class="cardcontainer" v-for="item in cateMovieList" :key="item.movie_id" style="margin-bottom: 20px;" @click="goToMovieDetail(item.movie_id)">
+
+        <div class="moviephoto">
+            <img :src="item.postUrl" alt="">
+        </div>
+        <div class="movieinfo">
+            <div class="moviename">
+                {{ item.movieName }}
+            </div>
+            <div class="moviestar">
+              
+              
+              
+              
+  <el-rate
+    v-model="item.movieScore"
+    disabled
+    show-score
+    
+    text-color="#ff9900"
+    :score-template="`${item.movieScore*2}分`"
+    
+  />
+
+
+              
+              
+              
+              
+         </div>
+            <div class="info">
+                <div>导演：{{item.director}}</div>
+           
+
+            </div>
+        </div>
+
+    </div>
+  
   </div>
   </div>
 </template>
@@ -129,4 +148,34 @@ margin-top: 10px;
       
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+ .cardcontainer{
+        height: 200px;
+        display: flex;
+        
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .moviephoto{
+        width: 150px;
+        height: 200px;
+        img{
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+    }
+    .movieinfo{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-left: 20px;
+        .info{
+            padding:10px;
+            border-left: 1px solid gray;
+        }
+    }
+
 </style>
