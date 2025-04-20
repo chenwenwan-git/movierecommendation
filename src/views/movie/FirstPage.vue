@@ -2,8 +2,9 @@
 import FirstPageBox from './components/FirstPageBox.vue' 
 import { MovieGetHotService}  from '@/api/movie'
 import {ref,onMounted} from 'vue'
+import { useRouter } from 'vue-router'
 const MovieHotList = ref([])
-
+const router = useRouter()  
 const getMovieHotList = async () => {
   const res = await MovieGetHotService()
   console.log(res.data.data)
@@ -19,9 +20,9 @@ onMounted(() => {
 <template>
     
   <el-carousel :interval="4000" type="card" height="600px" style="width: 700px; margin: 0 auto;" @change="handleCarouselChange">
-    <el-carousel-item v-for="item in MovieHotList.slice(0,3)" :key="item.movie_id">
+    <el-carousel-item v-for="item in MovieHotList.slice(0,3)" :key="item.movie_id" @click="router.push({ name: 'MovieDetail', params: { movieId: item.movie_id } })">
         
-        <img src="@/assets/1.png" alt="轮播图片" style="width: 100%; height: 100%; object-fit: cover;">
+        <img :src="item.postUrl" alt="轮播图片" style="width: 100%; height: 100%; object-fit: cover;">
        <!-- 图片连接用不了吗 -->
       
       <div class="moviename">
@@ -63,9 +64,9 @@ onMounted(() => {
 
 
  .active{
-        background-color: red;
+    background-color: red;
         
-    }
+}
 </style>
 
 

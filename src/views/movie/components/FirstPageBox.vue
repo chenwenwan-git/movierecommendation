@@ -1,4 +1,7 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()  
 const props = defineProps({
   movieList: {
     type: Array,
@@ -14,7 +17,7 @@ const props = defineProps({
         </div>
         <div class="content">
             
-                <div class="movie-box" v-for="item in props.movieList" :key="item.movie_id">
+                <div class="movie-box" v-for="item in props.movieList" :key="item.movie_id" @click="router.push({ name: 'MovieDetail', params: { movieId: item.movie_id } })">
                     <img :src="item.postUrl"  class="movie-poster" />
                     <div class="movie-title">{{item.movieName}}</div>
                     <div class="movie-rating">评分：{{ item.movieScore }}</div>
