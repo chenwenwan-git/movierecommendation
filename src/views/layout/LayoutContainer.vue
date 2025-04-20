@@ -11,6 +11,7 @@ import {
 import avatar from '@/assets/default.png'
 import { useUserStore } from '@/stores';
 import { useRouter } from 'vue-router'
+import {ref} from 'vue' 
 const userStore = useUserStore()
 const router = useRouter()  
 
@@ -46,6 +47,23 @@ else{
   router.push('/user/'+key)
 }
 }
+
+const input2 = ref('')
+
+const getMovie = async () => {
+  //获取电影名称
+  if (input2.value === '') {
+    ElMessage({
+      type: 'warning',
+      message: '请输入电影名称',
+    })
+    return
+  }
+  //跳转到搜索页面
+  router.push({ name: 'MovieDetail', params: { movieId: input2.value } })
+  input2.value = ''
+}
+
 </script>
 
 
@@ -69,6 +87,7 @@ else{
       style="width: 240px"
       placeholder="请输入电影名称"
       :prefix-icon="Search"
+       @keyup.enter="getMovie"
     />
          </div>
          

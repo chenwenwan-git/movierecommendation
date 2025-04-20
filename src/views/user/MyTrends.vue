@@ -57,9 +57,12 @@ const deleteReview = (row) => {
         <el-button type="default" size="big" @click="viewDetails(scope.row,false)">查看详情</el-button>
       </template>
     </el-table-column>
-    <el-table-column prop="movieName" align="center" label="评论人" />
-    
-    
+    <el-table-column align="center" label="评论人" >
+    <template #default>
+      chen
+      <!-- 这里先固定  -->
+    </template>
+    </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
         <el-button type="primary" :icon="Edit" circle @click="editReview(scope.row,true)"/>
