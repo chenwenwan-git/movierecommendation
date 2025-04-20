@@ -18,14 +18,11 @@ const formModel = ref({
 })
 
 
-
-
-const rules = {
-    
-    oldPassword: [
-        { required: true, message: '请输入原密码', trigger: 'blur' },
-        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
-        {
+// 通用的密码验证规则
+const passwordCommonRules = [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
+    {
         validator(rule, value, callback) {
             // 判断是否为纯数字
             if (/^\d+$/.test(value)) {
@@ -36,57 +33,39 @@ const rules = {
         },
         trigger: 'blur'
     }
-        // 这里之后进行原密码的校验，应该不用吧
+];
+const rules = {
+    oldPassword: [
+       ...passwordCommonRules
     ],
     newPassword: [
-        { required: true, message: '请输入修改后的密码', trigger: 'blur' },
-        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
-        {validator(rule,value,callback){
-          if(value === formModel.value.oldPassword && value){
-            callback('新老密码不能一样')
-
-          }else{
-            callback()
-          }
-        }},
+       ...passwordCommonRules,
         {
-        validator(rule, value, callback) {
-            // 判断是否为纯数字
-            if (/^\d+$/.test(value)) {
-                callback();
-            } else {
-                callback('密码必须由数字组成');
-            }
-        },
-        trigger: 'blur'
-    }
-    ],
-    rePassword:[
-        { required:true,message:'请再次输入修改后的密码',trigger:'blur'},
-        { min:6,max:12,message:'长度在6到12个字符',trigger:'blur'},
-        {
-        validator(rule, value, callback) {
-            // 判断是否为纯数字
-            if (/^\d+$/.test(value)) {
-                callback();
-            } else {
-                callback('密码必须由数字组成');
-            }
-        },
-        trigger: 'blur'
-    },
-        {
-      validator: (rule, value, callback) => {
-        if (value !== formModel.value.newPassword) {
-          callback(new Error('两次输入密码不一致!'))
-        } else {
-          callback()
+            validator(rule, value, callback) {
+                if (value === formModel.value.oldPassword && value) {
+                    callback('新老密码不能一样');
+                } else {
+                    callback();
+                }
+            },
+            trigger: 'blur'
         }
-      },
-      trigger: 'blur'
-    }
+    ],
+    rePassword: [
+       ...passwordCommonRules,
+        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }, // 这里 rePassword 的长度规则和其他不同，保留单独设置
+        {
+            validator: (rule, value, callback) => {
+                if (value!== formModel.value.newPassword) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            },
+            trigger: 'blur'
+        }
     ]
-}
+};
 
 const change = async ()=>{
     //进行注册之前的表单校验，不成功会自动根据rules进行校验提示

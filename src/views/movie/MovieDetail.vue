@@ -3,6 +3,7 @@ import {useRoute} from 'vue-router'
 import {ref,watch} from 'vue'
 import { getMovieById } from '@/api/movie'
 import { insertUserComment } from '@/api/comment.js'
+import {useUserStore} from '@/stores'
 
 const route = useRoute()
 const movieId = ref(route.params.movieId)
@@ -29,6 +30,16 @@ const getReversedComments = () => {
   return dataList.value.comments.slice().reverse();
 };
 const addComment = async()=>{
+  const userStore = useUserStore()
+  const token = userStore.token
+  if(!token){
+    ElMessage({
+    message: '请先登陆',
+    type: 'warning',
+  })
+    return
+
+  }
   console.log(input.value)
   if(input.value === ''){
     console.log('KONG')

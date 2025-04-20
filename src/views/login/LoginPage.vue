@@ -16,50 +16,41 @@ const formModel = ref({
     passWord:'',
     repassWord:''
 })
+
+// 通用的密码验证规则
+const passwordRules = [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
+    {
+        validator(rule, value, callback) {
+            // 判断是否为纯数字
+            if (/^\d+$/.test(value)) {
+                callback();
+            } else {
+                callback('密码必须由数字组成');
+            }
+        },
+        trigger: 'blur'
+    }
+]
 const rules = {
     userName: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
         { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
     ],
-    passWord: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 6, max: 13, message: '长度在 6 到 13 个数字', trigger: 'blur' },
-          {
-        validator(rule, value, callback) {
-            // 判断是否为纯数字
-            if (/^\d+$/.test(value)) {
-                callback();
-            } else {
-                callback('密码必须由数字组成');
-            }
-        },
-        trigger: 'blur'
-    }
-    ],
-    repassWord:[
-        { required:true,message:'请再次输入密码',trigger:'blur'},
-        { min:6,max:13,message:'长度在6到13个数字',trigger:'blur'},
-          {
-        validator(rule, value, callback) {
-            // 判断是否为纯数字
-            if (/^\d+$/.test(value)) {
-                callback();
-            } else {
-                callback('密码必须由数字组成');
-            }
-        },
-        trigger: 'blur'
-    },
+    passWord: passwordRules,
+    repassWord: [
+        ...passwordRules,
         {
-      validator: (rule, value, callback) => {
-        if (value !== formModel.value.passWord) {
-          callback(new Error('两次输入密码不一致!'))
-        } else {
-          callback()
+            validator: (rule, value, callback) => {
+                if (value!== formModel.value.passWord) {
+                    callback(new Error('两次输入密码不一致!'))
+                } else {
+                    callback()
+                }
+            },
+            trigger: 'blur'
         }
-      },
-      trigger: 'blur'
-    }
     ]
 }
 const getRegister = async ()=>{
