@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { updateUserComment } from '@/api/comment.js'
+import { ElMessage } from 'element-plus'
 const dialogVisible = ref(false)
 const viewOredit = ref()
 const form = ref()
@@ -13,23 +14,21 @@ const open = async (row,value) => {
   
 }
 
-
-
 const formModel = ref({
   movieName: '',
   comment: []
 })
-const rules = {
-
-  comment: [
-    { required: true, message: '请输入评论', trigger: 'blur' },
-    
-  ]
-}
 
 //todo:暂时不知道如何解决多个评论的问题
 const change = async(commentId,comment)=>{
-    await form.value.validate()
+    
+    if(comment === ''){
+       ElMessage({
+      type: 'warning',
+      message: '评论不能为空',
+    })
+      return
+    }
     await updateUserComment(commentId,comment,{})
     console.log('修改成功')
     ElMessage.success('修改成功')
@@ -48,7 +47,7 @@ defineExpose({
     <div>
 <el-form
   :model="formModel"
-  :rules="rules"
+  
   ref="form"
   label-width="100px"
   style="padding-right: 30px"
@@ -61,7 +60,7 @@ defineExpose({
       maxlength="10"
     ></el-input>
   </el-form-item>
-  <el-form-item  prop="comment" v-for="(item,index) in formModel.comment" :key="item.commentId" :label="`评论${index+1}`">
+  <el-form-item   v-for="(item,index) in formModel.comment" :key="item.commentId" :label="`评论${index+1}`">
    <div style="display: flex;justify-content: space-between;width: 100%;">
     <el-input
       v-model="item.comment"

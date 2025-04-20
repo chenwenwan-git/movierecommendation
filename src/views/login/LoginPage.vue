@@ -118,6 +118,7 @@ watch(isRegister,()=>{
             :prefix-icon="Lock"
             type="passWord"
             placeholder="请输入密码"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item prop="repassWord">
@@ -126,6 +127,7 @@ watch(isRegister,()=>{
             :prefix-icon="Lock"
             type="passWord"
             placeholder="请输入再次密码"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -155,14 +157,10 @@ watch(isRegister,()=>{
             :prefix-icon="Lock"
             type="passWord"
             placeholder="请输入密码"
+            show-password
           ></el-input>
         </el-form-item>
-        <el-form-item class="flex">
-          <div class="flex">
-            <el-checkbox>记住我</el-checkbox>
-            <el-link type="primary" :underline="false">忘记密码？</el-link>
-          </div>
-        </el-form-item>
+  
         <el-form-item>
           <el-button @click="getLogin" class="button" type="primary" auto-insert-space
             >登录</el-button

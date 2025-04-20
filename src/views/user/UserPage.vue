@@ -2,11 +2,6 @@
 import { Edit,Male } from '@element-plus/icons-vue'
 import { ChatRound,Film,Star } from '@element-plus/icons-vue'
 
-import {ref} from 'vue'
-const activeIndex = ref('1')
-
-//监听当前路由？？
-
 </script>
 
 <template>
@@ -28,21 +23,21 @@ const activeIndex = ref('1')
         <hr>
          <div v-if="this.$route.path !== '/user/ChangePassword'">
               <el-menu
-    :default-active="activeIndex"
+    :default-active="$route.path"
     class="el-menu-demo"
     
     mode="horizontal"
     
   >
   
-    <el-menu-item  index="1" @click="$router.push('/user/MyInfo')">
+    <el-menu-item  index='/user/MyInfo' @click="$router.push('/user/MyInfo')">
         <el-icon>
     <Star />
   </el-icon>
         推荐</el-menu-item>
    
     
-    <el-menu-item index="2" @click="$router.push('/user/MyTrends')" > <el-icon>
+    <el-menu-item index='/user/MyTrends' @click="$router.push('/user/MyTrends')" > <el-icon>
     <ChatRound />
   </el-icon>
         动态</el-menu-item>

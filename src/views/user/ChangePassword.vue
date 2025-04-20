@@ -135,7 +135,7 @@ const reset = ()=>{
  <el-form :model="formModel" :rules="rules" ref="form" size="large" autocomplete="off">
        
         <el-form-item prop="oldPassword" label="原始密码">
-          <el-input  v-model="formModel.oldPassword" :prefix-icon="Lock" placeholder="请输入原密码"></el-input>
+          <el-input  v-model="formModel.oldPassword" :prefix-icon="Lock" placeholder="请输入原密码" show-password></el-input>
         </el-form-item>
         <el-form-item prop="newPassword" label="修改密码">
           <el-input
@@ -144,6 +144,7 @@ const reset = ()=>{
             :prefix-icon="Lock"
             type="newPassword"
             placeholder="请输入修改后的密码"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item prop="rePassword" label="确认密码">
@@ -152,6 +153,7 @@ const reset = ()=>{
             name="newPassword"
             :prefix-icon="Lock"
             type="newPassword"
+            show-password
             placeholder="请再次输入修改后的密码"
           ></el-input>
         </el-form-item>
@@ -171,9 +173,6 @@ const reset = ()=>{
 </div>
 </div>
 
-
-
-    
 
 </template>
 

@@ -89,8 +89,7 @@ const goToMovieDetail = (movieId) => {
             </div>
             <div class="moviestar">
               
-              
-              
+             
               
   <el-rate
     v-model="item.movieScore"
@@ -102,11 +101,7 @@ const goToMovieDetail = (movieId) => {
     
   />
 
-
-              
-              
-              
-              
+  
          </div>
             <div class="info">
                 <div>导演：{{item.director}}</div>
