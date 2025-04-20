@@ -11,8 +11,11 @@ const input = ref('')
 const dataList = ref([])
 const getMovieDetailList = async(movieId) =>{
   const res  = await getMovieById(movieId)
-   
-  dataList.value = res.data.data
+    const data = res.data.data;
+       
+    data.movieScore = Number(data.movieScore) / 2;
+        
+  dataList.value = data
 }
 // 组件初始化时获取一次数据
 getMovieDetailList(movieId.value)
@@ -27,7 +30,11 @@ watch(()=> route.params.movieId,(newId)=>{
   movieId.value = newId
 })
 const getReversedComments = () => {
-  return dataList.value.comments.slice().reverse();
+   if (dataList.value && dataList.value.comments) {
+    return dataList.value.comments.slice().reverse();
+  }
+  return []; // 如果数据不存在，返回空数组，避免报错
+  
 };
 const addComment = async()=>{
   const userStore = useUserStore()
@@ -78,9 +85,24 @@ const addComment = async()=>{
  <div class="movie-info">
   <div class="out">
       <h2 class="movie-title">{{ dataList.movieName }}</h2>
-      <div class="movie-rating">
+      <div class="movie-rating" >
         
-        <span class="rating-text">评分</span>
+         
+              
+             
+              
+  <el-rate
+    v-model="dataList.movieScore"
+    disabled
+    show-score
+    
+    text-color="#ff9900"
+    :score-template="`${dataList.movieScore*2}分`"
+     
+  />
+
+  
+         
       </div>
       </div>
       <div class="inner" style="margin-top: 20px;">
@@ -88,7 +110,7 @@ const addComment = async()=>{
         <div class="d">导演：{{dataList.director}}</div>
         <div class="d">演员：{{dataList.actors}}</div>
         <div class="d">简介：{{dataList.plotSummary}}</div>
-        <div class="d">导演：</div>
+        
         </div>
     
      
@@ -103,7 +125,7 @@ const addComment = async()=>{
   </div>
   <div class="comment w">
     
-            <div style="font-weight: 500; font-size: 20px;margin-top: 20px;">评论区</div>
+            <div style="font-weight: 500; font-size: 20px;margin-top: 40px;">评论区</div>
     <div class="my-comment">
 <el-avatar :size="50" :src="avatar" style="margin-right: 10px;" />
 <el-input v-model="input" style="height: 50px;" placeholder="请输入评论" @keyup.enter="addComment"/>
@@ -138,6 +160,7 @@ const addComment = async()=>{
   width: 100vw;
   height: 500px; 
   
+  
  
    position: relative;
    display: flex;
@@ -152,8 +175,9 @@ const addComment = async()=>{
       background-image: var(--bg-image-url);
   background-size: cover;
   background-position: center;
-  filter:blur(7px);
+  filter:blur(8px);
   position: absolute;
+  
   top:0;
   bottom: 0;
   right:0;
@@ -162,10 +186,10 @@ const addComment = async()=>{
     
 }
  .movie-poster{
-    width: 230px;
-    height: 320px;
+    width: 300px;
+    height: 420px;
     
-    margin-top: -90px;
+    margin-top: -190px;
     margin-right: 30px;
     img{
         width: 100%;
@@ -181,9 +205,9 @@ const addComment = async()=>{
   margin-bottom: 10px;
 }
   .box{
-    height:50%;
+    height:53%;
     position:absolute;
-    bottom:0;
+    bottom:-3%;
     width:100vw;
     
     background-color:rgba(95, 155, 138,0.7);

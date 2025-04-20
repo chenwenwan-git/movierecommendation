@@ -90,12 +90,13 @@ watch(isRegister,()=>{
 </script>
 
 <template>
-  <el-row class="login-page">
-    <el-col :span="12" class="bg"></el-col>
-    <el-col :span="6" :offset="3" class="form">
+  <div class="login-page">
+    
+    <div class="form">
         <!-- ruleFore绑定整个表单的输入 -->
          <!-- rules绑定整个校验对象 -->
           <!-- 注册表单 -->
+           <div class="title">电影推荐系统</div>
       <el-form  :model="formModel" :rules="rules" ref="form" size="large" autocomplete="off" v-if="isRegister">
         <el-form-item>
           <h1>注册</h1>
@@ -164,21 +165,36 @@ watch(isRegister,()=>{
           </el-link>
         </el-form-item>
       </el-form>
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .login-page {
   height: 100vh;
-  background-color: #fff;
-  .bg {
-    background: url('@/assets/3.png') no-repeat 60% center / 240px auto,
-    
-      url('@/assets/2.png') no-repeat center / cover;
-    border-radius: 0 20px 20px 0;
-  }
+  
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background: url('@/assets/loginbg.png')  no-repeat  center / cover;
+.title{
+  font-size: 30px;
+  font-weight: 700;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
   .form {
+    width: 500px;
+    height: 500px;
+    box-sizing: border-box;
+    padding:30px;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    // box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    margin:0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;

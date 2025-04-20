@@ -58,7 +58,7 @@ const reload = () => {
   }
   // 调用获取电影列表的函数，传入“全部”类型的id
   getCateMovieList(0)
-  console.log('执行重新加载操作')
+  
 }
 
 const goToMovieDetail = (movieId) => {
@@ -105,6 +105,8 @@ const goToMovieDetail = (movieId) => {
          </div>
             <div class="info">
                 <div>导演：{{item.director}}</div>
+                
+                
            
 
             </div>
@@ -169,8 +171,18 @@ margin-top: 10px;
         margin-left: 20px;
         .info{
             padding:10px;
-            border-left: 1px solid gray;
+            position: relative;
         }
+         .info::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%); // 垂直居中
+        width: 1px;
+        height: 60%; 
+        background-color: rgb(230, 230, 230); 
+    }
     }
 
 </style>

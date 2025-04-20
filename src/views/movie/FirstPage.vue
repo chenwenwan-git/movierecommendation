@@ -60,6 +60,7 @@ onMounted(() => {
     color:white;
     height: 50px;
     line-height: 50px;
+    font-size: 20px;
 }
 
 
