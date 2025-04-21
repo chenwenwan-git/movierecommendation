@@ -7,7 +7,7 @@ const MovieHotList = ref([])
 const router = useRouter()  
 const getMovieHotList = async () => {
   const res = await MovieGetHotService()
-  console.log(res.data.data)
+  
   MovieHotList.value = res.data.data
 }
 getMovieHotList()
@@ -34,7 +34,7 @@ onMounted(() => {
     <FirstPageBox :movieList="MovieHotList">评分最多……</FirstPageBox>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .el-carousel__item h3 {
   color: #475669;

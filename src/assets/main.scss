@@ -6,4 +6,8 @@ body{
   z-index: 9999 !important; //避免提示框被导航栏遮住
 }
 
+.bgcolor{
+  // background-color: yellow;
+  background-color: rgb(95, 155, 138);
+}
 //之后切换路由和进去页面的动画效果

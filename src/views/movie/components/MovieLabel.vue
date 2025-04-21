@@ -53,7 +53,7 @@ const handleToggleActive = (item) => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 
 .filter-group {

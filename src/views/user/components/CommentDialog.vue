@@ -30,7 +30,7 @@ const change = async(commentId,comment)=>{
       return
     }
     await updateUserComment(commentId,comment,{})
-    console.log('修改成功')
+    
     ElMessage.success('修改成功')
     //如何重新渲染数据
     // 发送emit到父组件

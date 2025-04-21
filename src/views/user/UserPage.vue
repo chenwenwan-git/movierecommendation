@@ -51,7 +51,7 @@ import { ChatRound,Film,Star } from '@element-plus/icons-vue'
         </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .InfoContainer {
    margin:0 auto;
    width: 60vw;

@@ -5,7 +5,7 @@ const props = defineProps({
     required: true
   }
 })
-console.log(props.moviedata)
+
 </script>
 
 <template>
@@ -33,7 +33,7 @@ console.log(props.moviedata)
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
     .container{
         height: 200px;
         display: flex;

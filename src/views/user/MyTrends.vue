@@ -8,11 +8,10 @@ import CommentDialog from './components/CommentDialog.vue';
 const commentData = ref([])
 const loading = ref(false)
 const getCommentList = async () => {
-          loading.value = true
+  loading.value = true
   const res = await getUserComment({})
-  console.log(res.data.data)
   commentData.value = res.data.data
-    loading.value = false
+  loading.value = false
 }
 getCommentList({})
 const dialog = ref()
@@ -23,7 +22,7 @@ const dialog = ref()
 
 
 const viewDetails = (row,value) => {
-  console.log('查看详情', row);
+  
   dialog.value.open(row,value)
 };
 
@@ -33,7 +32,7 @@ const changeSuccess = ()=>{
 
 const editReview = async(row,value) => {
        
-  console.log('编辑评论', row);
+  
   dialog.value.open(row,value)
   //每次取消之后重新发请求吗
 
@@ -42,14 +41,17 @@ const editReview = async(row,value) => {
 
 
 const deleteReview = (row) => {
-  console.log('删除评论', row);
+  
 };
 </script>
 
 <template>
     
-        
-  <el-table :data="commentData" v-loading="loading" style="width: 100%" stripe>
+    <!-- 添加空状态 -->
+  <!-- <el-empty v-if="!commentData.value" description="暂无评论数据"></el-empty> -->
+  <el-table  :data="commentData" v-loading="loading" style="width: 100%" stripe>
+  
+  
     <el-table-column align="center" prop="movieName" label="电影" />
     <!-- <el-table-column align="center" prop="movieName" label="评分" /> -->
     <el-table-column label="评语" align="center">
@@ -97,6 +99,6 @@ const deleteReview = (row) => {
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

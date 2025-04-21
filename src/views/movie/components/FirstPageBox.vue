@@ -27,7 +27,7 @@ const props = defineProps({
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .container{
     width: 90vw;
     /* height: 600px; */

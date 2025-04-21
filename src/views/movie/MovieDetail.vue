@@ -47,14 +47,14 @@ const addComment = async()=>{
     return
 
   }
-  console.log(input.value)
+  
   if(input.value === ''){
-    console.log('KONG')
+    
     ElMessage({
     message: '请输入评论内容',
     type: 'warning',
   })
-    console.log('KONG')
+    
     return 
   }
 
@@ -154,7 +154,7 @@ const addComment = async()=>{
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .headerbox {
   width: 100vw;
@@ -259,8 +259,8 @@ display:flex;
   display: block;
   width: 100%;
   height: 1px;
-  background-color: rgb(235, 235, 235); /* 下划线颜色，可按需修改 */
-  margin-top: 15px; /* 下划线与文本的间距，可按需调整 */
+  background-color: rgb(235, 235, 235); 
+  margin-top: 15px; 
 
 }
 </style>

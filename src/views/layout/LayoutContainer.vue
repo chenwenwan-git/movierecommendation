@@ -131,7 +131,7 @@ const getMovie = async () => {
     
 
 
-<style scoped>
+<style lang="scss" scoped>
 .bebold{
   font-weight: 700;
 }
