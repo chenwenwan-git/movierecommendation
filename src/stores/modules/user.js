@@ -8,10 +8,7 @@ export const useUserStore = defineStore(
     const token = ref('') // 定义 token
     const setToken = (newtoken) => {
       (token.value = newtoken) // 设置 token
-      
-      
     }
-
     return { token, setToken }//暴露
   },
   {

@@ -11,8 +11,6 @@ const instance = axios.create({
   // TODO 1. 基础地址，超时时间
   baseURL,
   timeout: 10000,
-  
-
 })
 
 // 请求拦截器
@@ -22,7 +20,6 @@ instance.interceptors.request.use(
     const token = userStore.token
     if (token) {
       config.headers.Authorization = token // 请求头携带token
-      
     }
     return config
   },
@@ -38,13 +35,10 @@ instance.interceptors.response.use(
         return res
     }
     //处理业务失败
-    
     // 提示错误信息，抛出错误
     ElMessage.error(res.data.msg || '服务异常，请稍后再试')
     //错误提示，以接口对应的message为主
     return Promise.reject(res.data)
-    //使用elementplus提示框
-    
   }, 
   (err) => {
       // TODO 5. 处理401错误
