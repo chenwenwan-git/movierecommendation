@@ -5,7 +5,7 @@ import {ElMessage} from 'element-plus'
 import router from '@/router'
 
 // baseurl
-const baseURL = 'http://8.134.80.166'
+const baseURL = import.meta.env.VITE_BASE_URL
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -40,7 +40,7 @@ instance.interceptors.response.use(
     //处理业务失败
     
     // 提示错误信息，抛出错误
-    ElMessage.error(res.data.message || '服务异常，请稍后再试')
+    ElMessage.error(res.data.msg || '服务异常，请稍后再试')
     //错误提示，以接口对应的message为主
     return Promise.reject(res.data)
     //使用elementplus提示框
@@ -53,7 +53,7 @@ instance.interceptors.response.use(
         router.push('/login')
     }
       //错误的默认情况，给提示
-    ElMessage.error(err.response.data.message || '服务异常，请稍后再试')
+    ElMessage.error(err.response.data.msg || '服务异常，请稍后再试')
     return Promise.reject(err)
   }
 )
