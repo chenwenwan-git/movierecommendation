@@ -5,7 +5,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const MovieHotList = ref([])
 const router = useRouter()
-const isLoading = ref(false)//换回去
+const isLoading = ref(true)
 const getMovieHotList = async () => {
   try {
     const res = await MovieGetHotService()
@@ -28,14 +28,21 @@ onMounted(() => {
   <div>
     <!-- 骨架屏 -->
     <template v-if="isLoading">
-      <el-carousel :interval="4000" type="card" height="600px" style="width: 700px; margin: 0 auto">
+      <el-carousel :interval="4000" type="card" height="500px" style="width: 1380px; margin: 0 auto">
         <el-carousel-item v-for="i in 3" :key="i">
           <div class="skeleton-img"></div>
           <div class="skeleton-moviename"></div>
         </el-carousel-item>
       </el-carousel>
 
-      <!-- <FirstPageBox :movieList="MovieHotList">评分最多……</FirstPageBox> -->
+      <div v-loading="isLoading" style="width: 90vw;
+  height: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #99a9bf;">
+  </div>
     </template>
     <!-- 页面 -->
     <template v-else>
@@ -56,9 +63,9 @@ onMounted(() => {
           <img
             :src="item.postUrl"
             alt="轮播图片"
+            title="点击查看详情"
             style="width: 100%; height: auto; object-fit: cover"
           />
-          <!-- 图片连接用不了吗 -->
 
           <div class="moviename">
             {{ item.movieName }}

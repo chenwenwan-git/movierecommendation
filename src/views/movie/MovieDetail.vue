@@ -152,8 +152,12 @@ const addComment = async () => {
 </template>
 
 <style lang="scss" scoped>
-.headerbox {
+.container{
   width: 100vw;
+  
+}
+.headerbox {
+  width: 100%;
   height: 500px;
 
   position: relative;
@@ -198,7 +202,7 @@ const addComment = async () => {
   height: 53%;
   position: absolute;
   bottom: -3%;
-  width: 100vw;
+  width: 100%;
 
   background-color: rgba(95, 155, 138, 0.7);
 }

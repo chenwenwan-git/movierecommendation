@@ -172,7 +172,7 @@ watch(isRegister, () => {
           >
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = true"> 创建账号 → </el-link>
+          <el-link type="info" :underline="false" @click="isRegister = true"> 没账号？先去创建 → </el-link>
         </el-form-item>
       </el-form>
     </div>
