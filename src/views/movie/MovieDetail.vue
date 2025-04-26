@@ -10,12 +10,12 @@ const movieId = ref(route.params.movieId)
 const input = ref('')
 const dataList = ref([])
 const empty = ref(false)
-const isLoading = ref(false)
+const isLoading1 = ref(false)
 
 //获取电影详情数据
 const getMovieDetailList = async (movieId) => {
   try {
-    isLoading.value = true
+    isLoading1.value = true
     empty.value = false
     const res = await getMovieById(movieId)
     const data = res.data.data
@@ -24,7 +24,7 @@ const getMovieDetailList = async (movieId) => {
   } catch (error) {
     empty.value = true
   } finally {
-    isLoading.value = false
+    isLoading1.value = false
   }
 }
 // 组件初始化时获取一次数据
@@ -81,8 +81,12 @@ const addComment = async () => {
 
 <template>
   <el-empty v-if="empty" :image-size="300" description="抱歉，暂无数据" />
-  <div v-else class="container" v-loading="isLoading">
-    <div class="headerbox" :style="{ '--bg-image-url': `url('${dataList.postUrl}')` }">
+  <div v-else class="container">
+    <div
+      class="headerbox"
+      v-loading="isLoading1"
+      :style="{ '--bg-image-url': `url('${dataList.postUrl}')` }"
+    >
       <div class="box">
         <div class="info w">
           <div class="movie-poster">
@@ -123,38 +127,66 @@ const addComment = async () => {
         />
       </div>
 
-      <div class="comment-card" style="margin-top: 40px; margin-left: 5px">
-        <div
-          v-for="(item, index) in getReversedComments()"
-          :key="index"
-          style="margin-bottom: 20px"
-        >
-          <div
-            style="
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-              margin-bottom: 10px;
-            "
-          >
-            <el-avatar
-              :size="40"
-              style="margin-right: 10px"
-              src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-            />
-            <span>{{ item.username }}</span>
+      <el-skeleton :loading="isLoading1" animated :count="3">
+        <template #template>
+          <div class="comment-card" style="margin-top: 40px; margin-left: 5px">
+            <div
+              style="
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-bottom: 10px;
+                height: 40px;
+              "
+            >
+              <el-skeleton-item
+                variant="image"
+                style="margin-right: 10px; width: 50px; height: 50px; border-radius: 25px"
+              ></el-skeleton-item>
+
+              <el-skeleton-item variant="text" style="width: 10%; height: 16px"></el-skeleton-item>
+            </div>
+
+            <el-skeleton-item
+              variant="text"
+              style="margin-left: 60px; height: 16px"
+            ></el-skeleton-item>
           </div>
-          <div class="comment-text" style="margin-left: 50px">{{ item.comment }}</div>
-        </div>
-      </div>
+        </template>
+        <template #default>
+          <div class="comment-card" style="margin-top: 40px; margin-left: 5px">
+            <div
+              v-for="(item, index) in getReversedComments()"
+              :key="index"
+              style="margin-bottom: 20px"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  margin-bottom: 10px;
+                "
+              >
+                <el-avatar
+                  :size="40"
+                  style="margin-right: 10px"
+                  src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                />
+                <span>{{ item.username }}</span>
+              </div>
+              <div class="comment-text" style="margin-left: 50px">{{ item.comment }}</div>
+            </div>
+          </div>
+        </template>
+      </el-skeleton>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.container{
+.container {
   width: 100vw;
-  
 }
 .headerbox {
   width: 100%;
@@ -207,7 +239,7 @@ const addComment = async () => {
   background-color: rgba(95, 155, 138, 0.7);
 }
 
-.comment{
+.comment {
   min-height: 400px;
 }
 .w {
