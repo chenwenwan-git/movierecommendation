@@ -75,7 +75,8 @@ const getLogin = async () => {
 
   ElMessage.success('登陆成功')
   //跳到首页
-  router.push('/movie/FirstPage')
+  // router.push('/movie/FirstPage')
+  router.back()
 }
 
 //切换登陆注册时，重置表单，由于使用的是同一个对象
