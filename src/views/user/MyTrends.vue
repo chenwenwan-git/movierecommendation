@@ -40,7 +40,7 @@ const deleteReview = (row) => {}
     <!-- <el-table-column align="center" prop="movieName" label="评分" /> -->
     <el-table-column label="评语" align="center">
       <template #default="scope">
-        <el-button type="default" size="big" @click="viewDetails(scope.row, false)"
+        <el-button type="default" size="large" @click="viewDetails(scope.row, false)"
           >查看详情</el-button
         >
       </template>
