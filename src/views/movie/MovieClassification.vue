@@ -1,58 +1,33 @@
 <script setup>
-import MovieLabel from './components/MovieLabel.vue'
-// import EveryMovieCard from './components/EveryMovieCard.vue';
 import { ref } from 'vue'
 import { RefreshLeft } from '@element-plus/icons-vue'
 import { cateMovies } from '@/api/movie'
 import { useRouter } from 'vue-router'
 
-// 类型数据
-const types = ref([
-  { label: '全部', isActive: true, id: 0 },
-  { label: '动作', isActive: false, id: 1 },
-  { label: '悬疑', isActive: false, id: 2 },
-  { label: '科幻', isActive: false, id: 3 },
-  { label: '励志', isActive: false, id: 4 },
-  { label: '动画', isActive: false, id: 5 },
-  { label: '惊悚', isActive: false, id: 6 },
-])
+const router = useRouter()
+const filterType = ref('0')
 const cateMovieList = ref([])
 const loading = ref(false)
 
-const router = useRouter()
-const getCateMovieList = async (typeId) => {
+const getCateMovieList = async (value) => {
   loading.value = true
-  const res = await cateMovies(typeId)
+  const res = await cateMovies(value)
   const newData = res.data.data.map((item) => {
     item.movieScore = +item.movieScore / 2 // 用+操作符强制转换
-
     return item
   })
   cateMovieList.value = newData
   loading.value = false
 }
-getCateMovieList(0)
+getCateMovieList(filterType.value)
 
-//标签的点击事件
-const toggleTypeActive = (type) => {
-  types.value.forEach((t) => (t.isActive = false))
-  type.isActive = true
-  getCateMovieList(type.id)
-}
-// const toggleRegionActive = (region) => {
-//   regions.value.forEach(r => r.isActive = false)
-//   region.isActive = true
-// }
+
 const reload = () => {
   // 重新加载逻辑，调用接口重新获取数据
-  // 先将“全部”类型设为激活状态
-  types.value.forEach((t) => (t.isActive = false))
-  const allType = types.value.find((t) => t.id === 0)
-  if (allType) {
-    allType.isActive = true
-  }
-  // 调用获取电影列表的函数，传入“全部”类型的id
-  getCateMovieList(0)
+  //将类型按钮重置为“全部”
+  filterType.value = '0'
+  // 调用获取电影列表的函数，传入“全部”类型的value
+  getCateMovieList(filterType.value)
 }
 
 const goToMovieDetail = (movieId) => {
@@ -67,9 +42,23 @@ const goToMovieDetail = (movieId) => {
         <el-icon><RefreshLeft /></el-icon>
         重新加载
       </el-button>
-      <MovieLabel :items="types" label="类型:" @toggleActive="toggleTypeActive" />
-      <!-- <MovieLabel :items="regions" label="地区:" @toggleActive="toggleRegionActive" /> -->
+      <div class="filter-group">
+        
+      <span style="flex:1;margin-right: 15px;font-size: 17px;">
+        类型：
+      </span>
+       <el-radio-group v-model="filterType" size="large" style="flex:20;margin-bottom: 10px;" @change="getCateMovieList">
+      <el-radio-button label="全部" value="0" />
+      <el-radio-button label="动作" value="1" />
+      <el-radio-button label="悬疑" value="2" />
+      <el-radio-button label="科幻" value="3" />
+      <el-radio-button label="励志" value="4" />
+      <el-radio-button label="动画" value="5" />
+      <el-radio-button label="惊悚" value="6" />
+    </el-radio-group>
     </div>
+    </div>
+
     <div class="moviecard" v-loading="loading">
       <div
         class="cardcontainer"
@@ -118,6 +107,13 @@ const goToMovieDetail = (movieId) => {
   border-radius: 20px;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 15px;
 }
 .moviecard {
   margin-top: 20px;
