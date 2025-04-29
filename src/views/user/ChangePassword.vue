@@ -125,7 +125,7 @@ const reset = () => {
         ></el-input>
       </el-form-item>
     </el-form>
-    <div class="btn" style="margin-top: 10px">
+    <div class="btn">
       <el-button @click="change" class="button" type="primary" auto-insert-space>
         确认修改
       </el-button>
@@ -148,5 +148,11 @@ const reset = () => {
 .passwordbox {
   width: 20vw;
   margin-top: 30px;
+}
+.btn{
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

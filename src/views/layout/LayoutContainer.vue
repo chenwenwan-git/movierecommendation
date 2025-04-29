@@ -53,20 +53,26 @@ const getMovie = async () => {
         <div class="left">
           <div style="font-size: 30px; color: white">电影推荐系统</div>
           <div class="nav">
-            <div
+            <!-- <div
               @click="$router.push('/movie/FirstPage')"
               style="margin-right: 20px"
               :class="{ bebold: this.$route.path === '/movie/FirstPage' }"
             >
               首页
-            </div>
+            </div> -->
             <!-- 加粗显示 -->
-            <div
+            <!-- <div
               @click="$router.push('/movie/Classification')"
               :class="{ bebold: this.$route.path === '/movie/Classification' }"
             >
               分类
-            </div>
+            </div> -->
+            <RouterLink active-class="bebold" to="/movie/FirstPage"   style="margin-right: 20px;color:white;text-decoration: none;">
+              首页
+            </RouterLink>
+            <RouterLink active-class="bebold" to="/movie/Classification"   style="margin-right: 20px;color:white;text-decoration: none;">
+              分类
+            </RouterLink>
           </div>
 
           <el-input
