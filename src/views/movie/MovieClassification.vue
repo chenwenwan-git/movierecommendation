@@ -137,6 +137,18 @@ const goToMovieDetail = (movieId) => {
   flex-direction: column;
   // justify-content: flex-start;
   align-items: flex-start;
+  transition: all 0.5s;
+  padding:5px;
+  
+}
+
+
+.cardcontainer:hover{ //鼠标悬停时激活
+  
+  transition: 0.5s; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05); 
+  border-radius: 10px;
   
 }
 .moviephoto {
